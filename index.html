@@ -883,9 +883,47 @@
 <body>
 
     <!-- Header -->
-   
+    <header class="header">
+        <div class="container flex-between">
+            <div class="logo">
+                <a href="#">DailyTrade Dose</a>
+            </div>
+            <nav class="desktop-nav">
+                <a href="#overview" class="nav-link">Overview</a>
+                <a href="#curriculum" class="nav-link">Curriculum</a>
+                <a href="#bonuses" class="nav-link">Bonuses</a>
+                <a href="#testimonials" class="nav-link">Testimonials</a>
+                <a href="#video-testimonials" class="nav-link">Videos</a>
+                <a href="#faculty" class="nav-link">Faculty</a>
+                <a href="#faq" class="nav-link">FAQ</a>
+            </nav>
+            <a href="#apply" class="cta-button apply-button">
+                Apply Now
+            </a>
+            <button id="mobile-menu-button" class="mobile-menu-button">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="#overview" class="mobile-nav-link">Overview</a>
+            <a href="#curriculum" class="mobile-nav-link">Curriculum</a>
+            <a href="#bonuses" class="mobile-nav-link">Bonuses</a>
+            <a href="#testimonials" class="mobile-nav-link">Testimonials</a>
+            <a href="#video-testimonials" class="mobile-nav-link">Videos</a>
+            <a href="#faculty" class="mobile-nav-link">Faculty</a>
+            <a href="#faq" class="mobile-nav-link">FAQ</a>
+            <a href="#apply" class="mobile-nav-button">
+                Apply Now
+            </a>
+        </div>
+    </header>
 
-    
     <main>
         <!-- Hero Section -->
         <section class="hero-section" id="home">
@@ -1276,13 +1314,13 @@
                     <div class="testimonial-card glowing-outline">
                         <img src="https://placehold.co/80x80/00bf63/ffffff?text=JT" alt="Testimonial Avatar" class="testimonial-avatar">
                         <p class="testimonial-quote">"This program completely changed my approach to trading. The live classes and support are invaluable!"</p>
-                        <p class="testimonial-author">Jane Doe</p>
+                        <p class="testimonial-author">Ritesh Sharma</p>
                         <p class="testimonial-title">Forex Trader</p>
                     </div>
                     <div class="testimonial-card glowing-outline">
                         <img src="https://placehold.co/80x80/00bf63/ffffff?text=MA" alt="Testimonial Avatar" class="testimonial-avatar">
                         <p class="testimonial-quote">"The AI trading module is a game-changer. I'm seeing consistent profits for the first time."</p>
-                        <p class="testimonial-author">Michael A.</p>
+                        <p class="testimonial-author">Adiya Deshwal</p>
                         <p class="testimonial-title">Stock Investor</p>
                     </div>
                     <div class="testimonial-card glowing-outline">
@@ -1309,12 +1347,12 @@
                         </div>
                         <p class="video-title">Amazing Results with Forex Trading</p>
                     </div>
-                    <div class="video-wrapper glowing-outline">
+                    <!-- <div class="video-wrapper glowing-outline">
                         <div class="video-responsive">
                             <iframe src="https://www.youtube.com/embed/M7lc1UVf-VE?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
                         <p class="video-title">From Beginner to Pro in 3 Months</p>
-                    </div>
+                    </div> -->
                     <div class="video-wrapper glowing-outline">
                         <div class="video-responsive">
                             <iframe src="https://www.youtube.com/embed/P-Yy7n5c0xQ?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
@@ -1333,22 +1371,17 @@
                     <p class="section-subtitle">Learn from industry veterans with years of practical trading experience.</p>
                 </div>
                 <div class="card-grid">
+                    
                     <div class="instructor-card glowing-outline">
-                        <img src="https://placehold.co/100x100/FFDF00/0d0a1b?text=JD" alt="Instructor Avatar" class="instructor-avatar">
-                        <h3 class="instructor-name">Johnathan Davis</h3>
-                        <p class="instructor-bio">Lead Forex Strategist | 15+ Years Experience</p>
-                        <p class="instructor-bio">Specializes in technical analysis and risk management.</p>
-                    </div>
-                    <div class="instructor-card glowing-outline">
-                        <img src="https://placehold.co/100x100/FFDF00/0d0a1b?text=AS" alt="Instructor Avatar" class="instructor-avatar">
-                        <h3 class="instructor-name">Dr. Anya Sharma</h3>
-                        <p class="instructor-bio">AI Trading Lead | PhD in Quantitative Finance</p>
+                        <img src="https://placehold.co/100x100/FFDF00/0d0a1b?text=DS" alt="Instructor Avatar" class="instructor-avatar">
+                        <h3 class="instructor-name">Mr. David Saini</h3>
+                        <p class="instructor-bio">AI Trading Lead </p>
                         <p class="instructor-bio">Pioneering AI-driven trading algorithms.</p>
                     </div>
                     <div class="instructor-card glowing-outline">
-                        <img src="https://placehold.co/100x100/FFDF00/0d0a1b?text=MW" alt="Instructor Avatar" class="instructor-avatar">
-                        <h3 class="instructor-name">Marcus Williams</h3>
-                        <p class="instructor-bio">Market Psychology Expert | Ex-Hedge Fund Trader</p>
+                        <img src="https://placehold.co/100x100/FFDF00/0d0a1b?text=AS" alt="Instructor Avatar" class="instructor-avatar">
+                        <h3 class="instructor-name">Mr. AS Singhlas</h3>
+                        <p class="instructor-bio">Market Psychology Expert </p>
                         <p class="instructor-bio">Focuses on discipline and emotional control in trading.</p>
                     </div>
                 </div>
