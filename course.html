@@ -4,25 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Basic Trading Course</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter font from Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet">
     <!-- Lucide Icons CDN -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <style>
+        /* Base styles */
         body {
             font-family: 'Inter', sans-serif;
-            /* Changed: Slightly darker light background with a linear gradient */
-            background: linear-gradient(135deg, #dce8f7, #e0ebf9, #dce8f7); /* A bit deeper blue to light blue/white */
+            background: linear-gradient(135deg, #dce8f7, #e0ebf9, #dce8f7); /* Light blue to very light blue/white gradient */
             color: #333; /* Dark text for contrast */
             overflow-x: hidden; /* Prevent horizontal scroll from animations */
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            margin: 0; /* Reset default body margin */
+            padding: 0; /* Reset default body padding */
         }
 
-        /* Subtle background gradient animation (toned down for light theme) */
+        /* Subtle animated background overlay */
         body::before {
             content: '';
             position: fixed;
@@ -37,13 +37,125 @@
             opacity: 0.3; /* Even more subtle transparency */
         }
 
+        /* Keyframe animation for background gradient */
         @keyframes gradientBG {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        /* Custom styles for video placeholders */
+        /* Main container for page content */
+        .page-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2.5rem 1rem; /* py-10 px-4 */
+            min-height: 100vh;
+            width: 100%;
+        }
+
+        /* Header Section */
+        .header-section {
+            text-align: center;
+            margin-bottom: 3rem; /* mb-12 */
+            width: 100%;
+            max-width: 64rem; /* max-w-4xl (approx) */
+            position: relative;
+            z-index: 10;
+        }
+
+        .header-section h1 {
+            font-size: 2.25rem; /* text-4xl */
+            line-height: 1.25; /* leading-tight */
+            font-weight: 800; /* font-extrabold */
+            color: #1a202c; /* gray-900 */
+        }
+
+        .header-section h1 .highlight {
+            color: #2563eb; /* blue-600 */
+        }
+
+        .header-section p {
+            margin-top: 1rem; /* mt-4 */
+            font-size: 1.125rem; /* text-lg */
+            color: #4a5568; /* gray-700 */
+        }
+
+        /* Course Content Grid */
+        .course-grid {
+            display: grid;
+            grid-template-columns: 1fr; /* Default to 1 column on small screens */
+            gap: 2rem; /* gap-8 */
+            width: 100%;
+            max-width: 80rem; /* max-w-6xl (approx) */
+            position: relative;
+            z-index: 10;
+            flex-grow: 1; /* main-content */
+        }
+
+        /* Responsive grid adjustments */
+        @media (min-width: 640px) { /* sm: */
+            .course-grid {
+                grid-template-columns: repeat(2, 1fr); /* sm:grid-cols-2 */
+                padding-left: 1.5rem; /* sm:px-6 */
+                padding-right: 1.5rem; /* sm:px-6 */
+            }
+            .header-section {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+            }
+        }
+
+        @media (min-width: 1024px) { /* lg: */
+            .course-grid {
+                grid-template-columns: repeat(3, 1fr); /* lg:grid-cols-3 */
+                padding-left: 2rem; /* lg:px-8 */
+                padding-right: 2rem; /* lg:px-8 */
+            }
+            .header-section {
+                padding-left: 2rem;
+                padding-right: 2rem;
+            }
+        }
+
+        /* Course Card Styling */
+        .course-card {
+            background-color: #ffffff; /* White card background */
+            padding: 1.5rem; /* p-6 */
+            border-radius: 0.5rem; /* rounded-xl */
+            border: 1px solid rgba(226, 232, 240, 0.8); /* Subtle border */
+            box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Lighter shadow */
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0; /* Initial state for entrance animation */
+            transform: translateY(20px); /* Initial state for entrance animation */
+            display: flex; /* Make cards flex containers to push buttons to bottom */
+            flex-direction: column;
+        }
+
+        .course-card.animate-in {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .course-card:hover {
+            border-color: #3b82f6; /* Blue border on hover */
+            box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
+            transform: translateY(-8px); /* More pronounced lift effect */
+        }
+
+        .course-card h2 {
+            font-size: 1.5rem; /* text-2xl */
+            font-weight: 700; /* font-bold */
+            margin-bottom: 0.5rem; /* mb-2 */
+            color: #1a202c; /* Dark heading color */
+        }
+
+        .course-card p {
+            color: #4a5568; /* Medium dark paragraph color */
+            margin-bottom: 1rem; /* mb-4 */
+        }
+
+        /* Video Placeholder Styling */
         .video-placeholder {
             background-color: #f8f8f8; /* Very light background for placeholders */
             display: flex;
@@ -56,14 +168,28 @@
             font-weight: 600;
             color: #64748b; /* Medium gray text */
             border: 1px dashed #cbd5e0; /* Dashed border for placeholder */
-        }
-        /* Removed generic color from .video-placeholder .lucide here to allow individual icon coloring */
-        .video-placeholder .lucide {
-            margin-bottom: 8px; /* Space between icon and text */
-            /* color property is now set inline on each icon for custom colors */
+            margin-bottom: 1rem; /* mb-4 */
         }
 
-        /* Style for actual video embeds (iframes) */
+        .video-placeholder .lucide {
+            width: 2rem; /* w-8 */
+            height: 2rem; /* h-8 */
+            margin-bottom: 0.5rem; /* margin-bottom: 8px */
+        }
+        
+        .video-placeholder.flex-row {
+            flex-direction: row;
+            justify-content: center;
+            align-items: center;
+        }
+        .video-placeholder.flex-row .lucide + .lucide {
+            margin-left: 0.5rem; /* space-x-2 */
+        }
+        .video-placeholder.flex-row span {
+            margin-left: 0.5rem; /* space-x-2 */
+        }
+
+        /* Video Embed Container (for loaded videos) */
         .video-embed-container {
             position: relative;
             width: 100%;
@@ -71,6 +197,7 @@
             height: 0;
             overflow: hidden;
             border-radius: 0.5rem;
+            margin-bottom: 1rem; /* mb-4 */
         }
         .video-embed-container iframe {
             position: absolute;
@@ -81,39 +208,13 @@
             border: 0;
             background-color: #000; /* Black background for video area */
         }
-        /* Utility classes for toggling visibility */
+
+        /* Utility class for toggling visibility */
         .hidden {
             display: none;
         }
 
-        /* Card specific styles for light theme */
-        .course-card {
-            background-color: #ffffff; /* White card background */
-            color: #333; /* Dark text */
-            border: 1px solid rgba(226, 232, 240, 0.8); /* Subtle border */
-            box-shadow: 0 4px 10px -2px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06); /* Lighter shadow */
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            opacity: 0; /* Initial state for entrance animation */
-            transform: translateY(20px); /* Initial state for entrance animation */
-        }
-        .course-card.animate-in {
-            opacity: 1;
-            transform: translateY(0);
-        }
-        .course-card:hover {
-            border-color: #3b82f6; /* Blue border on hover */
-            box-shadow: 0 8px 20px -5px rgba(0, 0, 0, 0.15), 0 4px 8px -2px rgba(0, 0, 0, 0.1); /* More pronounced shadow */
-            transform: translateY(-8px); /* More pronounced lift effect */
-        }
-        .course-card h2 {
-            color: #1a202c; /* Dark heading color */
-            font-weight: 700;
-        }
-        .course-card p {
-            color: #4a5568; /* Medium dark paragraph color */
-        }
-
-        /* Button styles and animations */
+        /* Button base styles */
         .button-base {
             font-weight: 600;
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
@@ -122,7 +223,13 @@
             border: none;
             cursor: pointer;
             outline: none;
+            width: 100%; /* w-full */
+            padding: 0.75rem 1rem; /* py-3 px-4 */
+            border-radius: 0.375rem; /* rounded-md */
+            margin-top: auto; /* mt-auto to push to bottom of card */
         }
+
+        /* Button ripple effect */
         .button-base::before {
             content: '';
             position: absolute;
@@ -141,6 +248,7 @@
             opacity: 1;
         }
 
+        /* Watch Video Button specific styles */
         .watch-video-btn {
             background: linear-gradient(90deg, #3b82f6, #2563eb); /* Blue gradient */
             color: white;
@@ -149,7 +257,11 @@
             background: linear-gradient(90deg, #2563eb, #1e40af); /* Darker blue on hover */
             box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3); /* Blue glow */
         }
+        .watch-video-btn:focus {
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5); /* focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50 */
+        }
 
+        /* Hide Video Button specific styles */
         .hide-video-btn {
             background: linear-gradient(90deg, #ef4444, #dc2626); /* Red gradient */
             color: white;
@@ -158,264 +270,274 @@
             background: linear-gradient(90deg, #dc2626, #b91c1c); /* Darker red on hover */
             box-shadow: 0 5px 15px rgba(239, 68, 68, 0.3); /* Red glow */
         }
+        .hide-video-btn:focus {
+            box-shadow: 0 0 0 2px rgba(239, 68, 68, 0.5); /* focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 */
+        }
 
-        .main-content {
-            flex-grow: 1;
+        /* Footer */
+        .footer-section {
+            margin-top: 3rem; /* mt-12 */
+            text-align: center;
+            color: #4a5568; /* gray-600 */
+            font-size: 0.875rem; /* text-sm */
+            position: relative;
+            z-index: 10;
+            width: 100%;
         }
     </style>
 </head>
 <body class="antialiased">
-    <div class="min-h-screen flex flex-col items-center py-10 px-4 sm:px-6 lg:px-8 relative z-0">
+    <div class="page-container">
         <!-- Header Section -->
-        <header class="text-center mb-12 w-full max-w-4xl relative z-10">
-            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 leading-tight">
-                Mastering Financial Markets: <span class="text-blue-600">A Basic Course</span> 📈
+        <header class="header-section">
+            <h1>
+                Mastering Financial Markets: <span class="highlight">A Basic Course</span> 📈
             </h1>
-            <p class="mt-4 text-lg text-gray-700">
+            <p>
                 Unlock the secrets of trading with our comprehensive beginner-friendly course.
             </p>
         </header>
 
         <!-- Course Content Grid -->
-        <main class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 w-full max-w-6xl relative z-10 main-content">
+        <main class="course-grid">
 
             <!-- Course Card Template -->
 
             <!-- 1. Basic Course Introduction -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_1">
+            <div class="course-card" data-video-id="VIDEO_ID_1">
                 <!-- Preview State -->
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="book-open-text" class="w-8 h-8 text-blue-500"></i>
-                        <span class="text-lg">Basic Course Intro</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="book-open-text" style="width: 2rem; height: 2rem; color: #3b82f6;"></i>
+                        <span style="font-size: 1.125rem;">Basic Course Intro</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">Basic Course Introduction</h2>
-                    <p class="text-gray-700 mb-4">Get started with an overview of what you'll learn in this foundational trading course.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                    <h2>Basic Course Introduction</h2>
+                    <p>Get started with an overview of what you'll learn in this foundational trading course.</p>
+                    <button class="watch-video-btn button-base">
                         Watch Video
                     </button>
                 </div>
                 <!-- Video Player State (initially hidden) -->
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4">
+                    <div class="video-embed-container">
                         <!-- iframe will be injected here by JavaScript -->
                     </div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">
+                    <button class="hide-video-btn button-base">
                         Hide Video
                     </button>
                 </div>
             </div>
 
             <!-- 2. What is Market -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_2">
+            <div class="course-card" data-video-id="VIDEO_ID_2">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="trending-up" class="w-8 h-8 text-green-500"></i>
-                        <span class="text-lg">What is Market</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="trending-up" style="width: 2rem; height: 2rem; color: #22c55e;"></i>
+                        <span style="font-size: 1.125rem;">What is Market</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">What is Market?</h2>
-                    <p class="text-gray-700 mb-4">Understand the basics of financial markets, their types, and how they function.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>What is Market?</h2>
+                    <p>Understand the basics of financial markets, their types, and how they function.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 3. What is Chart -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_3">
+            <div class="course-card" data-video-id="VIDEO_ID_3">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="line-chart" class="w-8 h-8 text-purple-500"></i>
-                        <span class="text-lg">What is Chart</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="line-chart" style="width: 2rem; height: 2rem; color: #a855f7;"></i>
+                        <span style="font-size: 1.125rem;">What is Chart</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">What is Chart?</h2>
-                    <p class="text-gray-700 mb-4">Learn to read and interpret different types of trading charts and their components.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>What is Chart?</h2>
+                    <p>Learn to read and interpret different types of trading charts and their components.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 4. What is Price Action -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_4">
+            <div class="course-card" data-video-id="VIDEO_ID_4">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="candlestick-chart" class="w-8 h-8 text-orange-500"></i>
-                        <span class="text-lg">What is Price Action</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="candlestick-chart" style="width: 2rem; height: 2rem; color: #f97316;"></i>
+                        <span style="font-size: 1.125rem;">What is Price Action</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">What is Price Action?</h2>
-                    <p class="text-gray-700 mb-4">Discover how to analyze market movements purely based on price, without indicators.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>What is Price Action?</h2>
+                    <p>Discover how to analyze market movements purely based on price, without indicators.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 5. What is Indicator -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_5">
+            <div class="course-card" data-video-id="VIDEO_ID_5">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="gauge" class="w-8 h-8 text-yellow-500"></i>
-                        <span class="text-lg">What is Indicator</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="gauge" style="width: 2rem; height: 2rem; color: #eab308;"></i>
+                        <span style="font-size: 1.125rem;">What is Indicator</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">What is Indicator?</h2>
-                    <p class="text-gray-700 mb-4">Explore popular technical indicators and how they can assist in trading decisions.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>What is Indicator?</h2>
+                    <p>Explore popular technical indicators and how they can assist in trading decisions.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 6. What is Timeframe -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_6">
+            <div class="course-card" data-video-id="VIDEO_ID_6">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="clock" class="w-8 h-8 text-teal-500"></i>
-                        <span class="text-lg">What is Timeframe</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="clock" style="width: 2rem; height: 2rem; color: #14b8a6;"></i>
+                        <span style="font-size: 1.125rem;">What is Timeframe</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">What is Timeframe?</h2>
-                    <p class="text-gray-700 mb-4">Understand the concept of timeframes and how to choose the right one for your trading style.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>What is Timeframe?</h2>
+                    <p>Understand the concept of timeframes and how to choose the right one for your trading style.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 7. What is Strategy -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_7">
+            <div class="course-card" data-video-id="VIDEO_ID_7">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="compass" class="w-8 h-8 text-indigo-500"></i>
-                        <span class="text-lg">What is Strategy</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="compass" style="width: 2rem; height: 2rem; color: #6366f1;"></i>
+                        <span style="font-size: 1.125rem;">What is Strategy</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">What is Strategy?</h2>
-                    <p class="text-gray-700 mb-4">Learn about different trading strategies and how to develop your own effective plan.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>What is Strategy?</h2>
+                    <p>Learn about different trading strategies and how to develop your own effective plan.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 8. How to use Exness (or broker platform) -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_8">
+            <div class="course-card" data-video-id="VIDEO_ID_8">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="banknote" class="w-8 h-8 text-green-600"></i>
-                        <span class="text-lg">How to use Exness</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="banknote" style="width: 2rem; height: 2rem; color: #16a34a;"></i>
+                        <span style="font-size: 1.125rem;">How to use Exness</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">How to use Exness (or any broker)?</h2>
-                    <p class="text-gray-700 mb-4">A practical guide on navigating and utilizing a trading broker's platform.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>How to use Exness (or any broker)?</h2>
+                    <p>A practical guide on navigating and utilizing a trading broker's platform.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 9. How to take Trades -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_9">
+            <div class="course-card" data-video-id="VIDEO_ID_9">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="dollar-sign" class="w-8 h-8 text-blue-600"></i>
-                        <span class="text-lg">How to take Trades</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="dollar-sign" style="width: 2rem; height: 2rem; color: #2563eb;"></i>
+                        <span style="font-size: 1.125rem;">How to take Trades</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">How to Take Trades?</h2>
-                    <p class="text-gray-700 mb-4">Step-by-step instructions on executing trades in live market conditions.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>How to Take Trades?</h2>
+                    <p>Step-by-step instructions on executing trades in live market conditions.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 10. How we can make Profits -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_10">
+            <div class="course-card" data-video-id="VIDEO_ID_10">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="wallet" class="w-8 h-8 text-green-700"></i>
-                        <span class="text-lg">How we can make Profits</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="wallet" style="width: 2rem; height: 2rem; color: #047857;"></i>
+                        <span style="font-size: 1.125rem;">How we can make Profits</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">How We Can Make Profits?</h2>
-                    <p class="text-gray-700 mb-4">Insights into profit-making strategies and risk management techniques.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>How We Can Make Profits?</h2>
+                    <p>Insights into profit-making strategies and risk management techniques.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 11. What is Support & Resistance -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_11">
+            <div class="course-card" data-video-id="VIDEO_ID_11">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="bar-chart-2" class="w-8 h-8 text-cyan-600"></i>
-                        <span class="text-lg">What is Support & Resistance</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="bar-chart-2" style="width: 2rem; height: 2rem; color: #0891b2;"></i>
+                        <span style="font-size: 1.125rem;">What is Support & Resistance</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">What is Support & Resistance?</h2>
-                    <p class="text-gray-700 mb-4">Identify key price levels that act as barriers to market movements.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>What is Support & Resistance?</h2>
+                    <p>Identify key price levels that act as barriers to market movements.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 12. What is Buy/Sell -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_12">
+            <div class="course-card" data-video-id="VIDEO_ID_12">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4 flex-row space-x-2">
-                        <i data-lucide="arrow-up-circle" class="w-8 h-8 text-green-500"></i>
-                        <i data-lucide="arrow-down-circle" class="w-8 h-8 text-red-500"></i>
-                        <span class="text-lg">What is Buy/Sell</span>
+                    <div class="video-placeholder flex-row">
+                        <i data-lucide="arrow-up-circle" style="width: 2rem; height: 2rem; color: #22c55e;"></i>
+                        <i data-lucide="arrow-down-circle" style="width: 2rem; height: 2rem; color: #ef4444;"></i>
+                        <span style="font-size: 1.125rem;">What is Buy/Sell</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">What is Buy/Sell?</h2>
-                    <p class="text-gray-700 mb-4">Understand the fundamental concepts of entering long (buy) and short (sell) positions.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>What is Buy/Sell?</h2>
+                    <p>Understand the fundamental concepts of entering long (buy) and short (sell) positions.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
             <!-- 13. What is Order -->
-            <div class="course-card p-6 rounded-xl" data-video-id="VIDEO_ID_13">
+            <div class="course-card" data-video-id="VIDEO_ID_13">
                 <div class="video-preview-state">
-                    <div class="video-placeholder mb-4">
-                        <i data-lucide="receipt-text" class="w-8 h-8 text-gray-500"></i>
-                        <span class="text-lg">What is Order</span>
+                    <div class="video-placeholder">
+                        <i data-lucide="receipt-text" style="width: 2rem; height: 2rem; color: #6b7280;"></i>
+                        <span style="font-size: 1.125rem;">What is Order</span>
                     </div>
-                    <h2 class="text-2xl font-bold mb-2">What is Order?</h2>
-                    <p class="text-gray-700 mb-4">Learn about different types of orders used to open and close trades in the market.</p>
-                    <button class="watch-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">Watch Video</button>
+                    <h2>What is Order?</h2>
+                    <p>Learn about different types of orders used to open and close trades in the market.</p>
+                    <button class="watch-video-btn button-base">Watch Video</button>
                 </div>
                 <div class="video-player-state hidden">
-                    <div class="video-embed-container mb-4"></div>
-                    <button class="hide-video-btn button-base mt-auto w-full py-3 px-4 rounded-md focus:ring-2 focus:ring-red-500 focus:ring-opacity-50">Hide Video</button>
+                    <div class="video-embed-container"></div>
+                    <button class="hide-video-btn button-base">Hide Video</button>
                 </div>
             </div>
 
         </main>
 
         <!-- Footer Section -->
-        <footer class="mt-12 text-center text-gray-600 text-sm relative z-10 w-full">
-            <p>&copy; 2025 Daily Trade Dose All rights reserved.</p>
+        <footer class="footer-section">
+            <p>&copy; 2025 Daily Trade Dose. All rights reserved.</p>
         </footer>
     </div>
 
@@ -502,4 +624,3 @@
     </script>
 </body>
 </html>
-
