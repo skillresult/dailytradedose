@@ -5,202 +5,934 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forex Trading Program</title>
-    <!-- Tailwind CSS for utility-first styling -->
-    <script src="https://cdn.tailwindcss.com"></script>
     <!-- Inter font for clean, modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
     <style>
+        /* Base Styles & Typography */
+        :root {
+            --bg-color: #0d0a1b;
+            --text-color: #e2e8f0;
+            --dark-gray-800: #1e1b2e;
+            --dark-gray-900: #1a1727;
+            --dark-gray-950: #0d0a1b;
+            --cyan-400: #0ef1c6;
+            --cyan-700: #0e85f1;
+            --cyan-highlight-light: rgba(14, 241, 198, 0.2);
+            --cyan-highlight-dark: rgba(14, 133, 241, 0.2);
+            --yellow-400: #facc15;
+            --yellow-900-a50: rgba(250, 204, 21, 0.5);
+            --highlight-yellow: #FFDF00;
+            --highlight-green: #00BF63;
+        }
+
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #0d0a1b;
-            /* Deep dark purple background */
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            margin: 0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            overflow-x: hidden; /* Prevent horizontal scroll */
+        }
+
+        .container {
+            max-width: 1280px;
+            margin: 0 auto;
+            padding-left: 1.5rem;
+            padding-right: 1.5rem;
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .mb-12 {
+            margin-bottom: 3rem;
+        }
+
+        /* Header */
+        .header {
+            background-color: rgba(13, 10, 27, 0.8);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: sticky;
+            top: 0;
+            z-index: 100; /* Increased z-index */
+            padding-top: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(14, 241, 198, 0.1); /* Subtle bottom border */
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #fff;
+            text-decoration: none;
+        }
+
+        .desktop-nav {
+            display: none;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .nav-link {
             color: #e2e8f0;
-            /* Light gray text for readability */
+            transition: color 0.2s, border-bottom 0.2s;
+            padding-bottom: 0.25rem; /* For border-bottom effect */
+            border-bottom: 2px solid transparent;
         }
 
-        /* Gradient for the hero section background */
-        .hero-gradient {
+        .nav-link:hover {
+            color: var(--cyan-400);
+            border-bottom-color: var(--cyan-400);
+        }
+
+        .cta-button {
+            font-weight: 600;
+            padding: 0.75rem 1.5rem; /* Slightly larger padding */
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: inline-block; /* Ensure it takes padding correctly */
+        }
+
+        .apply-button {
+            display: none;
+            background-color: var(--cyan-400);
+            color: #0d0a1b;
+            box-shadow: 0 5px 15px rgba(14, 241, 198, 0.3); /* Add initial shadow */
+        }
+
+        .apply-button:hover {
+            transform: translateY(-3px); /* More pronounced lift */
+            box-shadow: 0 12px 20px rgba(14, 241, 198, 0.4), 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .mobile-menu-button {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            padding: 0;
+            font-size: 1.5rem;
+        }
+
+        .mobile-menu {
+            display: none;
+            padding: 0 1.5rem 1rem;
+            background-color: rgba(13, 10, 27, 0.95); /* Slightly darker for mobile menu */
+            border-top: 1px solid rgba(14, 241, 198, 0.1);
+        }
+
+        .mobile-nav-link {
+            display: block;
+            padding: 0.75rem 0; /* More padding for touch targets */
+            color: #e2e8f0;
+            transition: color 0.2s;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Separator for menu items */
+        }
+
+        .mobile-nav-link:last-child {
+            border-bottom: none;
+        }
+
+        .mobile-nav-link:hover {
+            color: var(--cyan-400);
+        }
+
+        .mobile-nav-button {
+            display: block;
+            margin-top: 1.5rem;
+            background-color: var(--cyan-400);
+            color: #0d0a1b;
+            font-weight: 600;
+            text-align: center;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(14, 241, 198, 0.3);
+        }
+        .mobile-nav-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(14, 241, 198, 0.4), 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Glowing Effects */
+        .glowing-outline {
+            border: 1px solid var(--cyan-highlight-light);
+            box-shadow: 0 0 10px var(--cyan-highlight-light), 0 0 20px var(--cyan-highlight-dark);
+            transition: all 0.3s ease-in-out;
+            border-radius: 0.75rem; /* Rounded corners for elements */
+        }
+
+        .glowing-outline:hover {
+            border-color: rgba(14, 241, 198, 0.8);
+            box-shadow: 0 0 15px rgba(14, 241, 198, 0.8), 0 0 30px rgba(14, 133, 241, 0.5);
+            transform: translateY(-3px); /* Consistent lift on hover */
+        }
+
+        @keyframes pulse-glow {
+            0%, 100% {
+                box-shadow: 0 0 10px rgba(14, 241, 198, 0.4), 0 0 20px rgba(14, 133, 241, 0.2);
+            }
+            50% {
+                box-shadow: 0 0 20px rgba(14, 241, 198, 0.8), 0 0 40px rgba(14, 133, 241, 0.6);
+            }
+        }
+
+        .cta-pulse {
+            animation: pulse-glow 2s infinite;
+        }
+
+        /* Hero Section */
+        .hero-section {
             background: radial-gradient(circle at top left, #1e0f3f 0%, #0d0a1b 75%);
+            padding-top: 5rem;
+            padding-bottom: 5rem;
+            position: relative;
+            overflow: hidden; /* Ensure glowing elements don't overflow */
         }
 
-        /* Gradient for the main title, creating a glowing text effect */
-        .title-gradient {
+        .hero-tag {
+            color: #6ee7b7;
+            font-weight: 600;
+            background-color: rgba(13, 10, 27, 0.5);
+            padding: 0.25rem 1rem;
+            border-radius: 9999px;
+            border: 1px solid rgba(14, 241, 198, 0.2);
+            box-shadow: 0 0 10px rgba(14, 241, 198, 0.4), 0 0 20px rgba(14, 133, 241, 0.2);
+        }
+
+        .hero-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1.25;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
             background: linear-gradient(45deg, #0ef1c6, #0e85f1);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
 
-        /* Custom CSS for a more intense glowing outline on elements with hover */
-        .glowing-outline {
-            border: 1px solid rgba(14, 241, 198, 0.2);
-            /* Electric green border */
-            box-shadow: 0 0 10px rgba(14, 241, 198, 0.4),
-                /* Electric green glow */
-                0 0 20px rgba(14, 133, 241, 0.2);
-            /* Cyan glow */
-            transition: all 0.3s ease-in-out;
-        }
-
-        .glowing-outline:hover {
-            border: 1px solid rgba(14, 241, 198, 0.8);
-            box-shadow: 0 0 15px rgba(14, 241, 198, 0.8),
-                0 0 30px rgba(14, 133, 241, 0.5);
-            transform: translateY(-2px);
-        }
-
-        /* Custom styling for CTA buttons with hover effects */
-        .cta-button {
-            transition: all 0.3s ease;
-        }
-
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
-        }
-
-        /* Pulsating animation for the main CTA button */
-        .cta-pulse {
-            animation: pulse-glow 2s infinite;
-        }
-
-        @keyframes pulse-glow {
-
-            0%,
-            100% {
-                box-shadow: 0 0 10px rgba(14, 241, 198, 0.4),
-                    0 0 20px rgba(14, 133, 241, 0.2);
-            }
-
-            50% {
-                box-shadow: 0 0 20px rgba(14, 241, 198, 0.8),
-                    0 0 40px rgba(14, 133, 241, 0.6);
-            }
-        }
-
-        /* Styling for FAQ accordion items */
-        .faq-item details>summary::-webkit-details-marker {
-            display: none;
-        }
-
-        /* Styling for the circular countdown timer elements */
-        .countdown-circle {
-            width: 80px;
-            height: 80px;
-        }
-
-        @media (max-width: 640px) {
-            .countdown-circle {
-                width: 60px;
-                height: 60px;
-            }
-        }
-
-
-        .highlight-yellow {
-            color: #FFDF00;
-            font-weight: bold;
+        .hero-subtitle {
+            font-size: 1.25rem;
+            color: #fff;
+            max-width: 48rem;
+            margin: 0 auto 2rem;
+            padding: 0 1rem; /* Added horizontal padding */
         }
 
         .highlight-green {
             color: #00BF63;
             font-weight: bold;
         }
+
+        .highlight-yellow {
+            color: #FFDF00;
+            font-weight: bold;
+        }
+
+        .countdown-section {
+            margin-bottom: 2.5rem;
+        }
+
+        .countdown-text {
+            color: var(--cyan-400);
+            font-weight: 600;
+            font-size: 1.125rem;
+            margin-bottom: 1rem;
+        }
+
+        .countdown-grid {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            gap: 1rem;
+            flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+        }
+
+        .countdown-item {
+            text-align: center;
+        }
+
+        .countdown-circle {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.25rem;
+            font-weight: 700;
+            background-color: rgba(30, 27, 46, 0.5);
+            border: 2px solid var(--cyan-700);
+            border-radius: 9999px;
+            transition: all 0.3s ease-in-out;
+            box-shadow: 0 0 8px rgba(14, 133, 241, 0.3); /* Subtle initial shadow */
+        }
+        .countdown-circle:hover {
+             box-shadow: 0 0 15px rgba(14, 133, 241, 0.6); /* Enhanced shadow on hover */
+             transform: scale(1.05); /* Slight scale effect */
+        }
+
+        .countdown-label {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        .hero-buttons {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1.5rem; /* Increased gap */
+            margin-bottom: 3rem;
+            flex-wrap: wrap; /* Allow buttons to wrap */
+            margin-left: auto; /* Ensures the entire block is centered */
+            margin-right: auto; /* Ensures the entire block is centered */
+        }
+
+        .main-cta-button, .secondary-cta-button {
+            font-weight: 700;
+            padding: 1rem 2rem; /* Increased padding */
+            border-radius: 0.75rem; /* More rounded */
+            text-decoration: none;
+            font-size: 1.25rem; /* Slightly larger font */
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2); /* Initial shadow */
+            text-align: center; /* Ensure text alignment */
+        }
+
+        .main-cta-button {
+            background: linear-gradient(to right, #0ef1c6, #0e85f1);
+            color: #0d0a1b;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .main-cta-button::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: all 0.4s ease-in-out;
+            z-index: -1;
+        }
+        .main-cta-button:hover::before {
+            left: 100%;
+        }
+        .main-cta-button:active {
+            transform: scale(0.98);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+        .price-highlight {
+            color: #fff;
+        }
+
+        .secondary-cta-button {
+            background-color: #1e1b2e;
+            color: #fff;
+            border: 1px solid #475569;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+        .secondary-cta-button:hover {
+            background-color: #2a2e40;
+            border-color: var(--cyan-400);
+            transform: translateY(-3px);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.25), 0 6px 10px rgba(0, 0, 0, 0.1);
+        }
+        .secondary-cta-button:active {
+            transform: scale(0.98);
+            box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .note {
+            font-style: italic;
+            font-weight: 600;
+            font-size: 0.875rem;
+            color: #a0aec0;
+            margin-top: 1rem; /* Ensure spacing from buttons */
+        }
+
+        .info-grid {
+            max-width: 64rem;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+            gap: 2rem;
+            text-align: left;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.05); /* Separator from top content */
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            background-color: rgba(30, 27, 46, 0.3); /* Subtle background for each item */
+            padding: 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid rgba(14, 241, 198, 0.05); /* Light border */
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: all 0.2s ease;
+        }
+        .info-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            border-color: rgba(14, 241, 198, 0.3);
+        }
+
+        .info-icon {
+            color: var(--cyan-400);
+            flex-shrink: 0; /* Prevent icon from shrinking */
+        }
+
+        .info-title {
+            font-weight: 600;
+            color: #fff;
+        }
+
+        .info-subtitle {
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        /* Sections (Why This Program, Bonuses) */
+        .section {
+            padding: 5rem 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .bg-dark-gray-800 {
+            background-color: var(--dark-gray-900);
+        }
+
+        .bg-dark-gray-950 {
+            background-color: var(--dark-gray-950);
+        }
+
+        .section-title {
+            font-size: 2.25rem;
+            font-weight: 700;
+            background: linear-gradient(45deg, #0ef1c6, #0e85f1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.125rem;
+            color: #94a3b8;
+            margin-top: 1rem;
+            max-width: 42rem;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 0 1rem;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); /* Adjusted for better card distribution */
+            gap: 2rem;
+        }
+
+        .card {
+            background-color: var(--dark-gray-900);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: relative; /* For the glowing outline */
+        }
+
+        .card-icon-container {
+            background-color: rgba(14, 241, 198, 0.15); /* Lighter background for icon circle */
+            color: var(--cyan-400);
+            border-radius: 9999px;
+            width: 3.5rem; /* Slightly larger icon container */
+            height: 3.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem; /* Increased margin */
+            font-size: 1.5rem; /* Size of the SVG icon */
+            border: 1px solid rgba(14, 241, 198, 0.3); /* Add a border to the icon circle */
+        }
+
+        .bonus-icon-container {
+            background-color: rgba(250, 204, 21, 0.15); /* Lighter background for bonus icon circle */
+            color: var(--yellow-400);
+            border: 1px solid rgba(250, 204, 21, 0.3); /* Border for bonus icon circle */
+        }
+
+        .card-title {
+            font-size: 1.35rem; /* Slightly larger title */
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.75rem; /* Increased margin */
+        }
+
+        .card-description {
+            color: #94a3b8;
+            font-size: 1rem; /* Consistent font size */
+        }
+
+        /* Accordion */
+        .accordion-container {
+            max-width: 48rem;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem; /* Increased gap */
+        }
+
+        .accordion-item {
+            border: 1px solid #334155;
+            border-radius: 0.75rem;
+            background-color: #1f2937;
+            overflow: hidden; /* Hide overflow during animation */
+        }
+        .accordion-item details[open] {
+            background-color: var(--dark-gray-800); /* Slightly different background when open */
+            border-color: var(--cyan-400); /* Highlight border when open */
+        }
+
+        .accordion-summary {
+            font-weight: 600;
+            font-size: 1.125rem;
+            color: #fff;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem; /* More padding */
+        }
+
+        .accordion-summary::-webkit-details-marker {
+            display: none;
+        }
+
+        .accordion-icon {
+            width: 1.5rem; /* Slightly larger icon */
+            height: 1.5rem;
+            transition: transform 0.3s;
+            color: var(--cyan-400); /* Color the icon */
+        }
+
+        details[open] .accordion-icon {
+            transform: rotate(180deg);
+        }
+
+        .accordion-list {
+            margin-top: 1rem;
+            color: #94a3b8;
+            list-style-type: none;
+            padding: 0 1.25rem 1.25rem; /* Padding for list items */
+        }
+
+        .list-item {
+            display: flex;
+            gap: 0.75rem; /* Increased gap */
+            align-items: flex-start; /* Align text to top */
+            margin-bottom: 0.75rem; /* More spacing between items */
+            font-size: 1rem;
+        }
+        .list-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .list-icon {
+            color: #39ea6e;
+            flex-shrink: 0;
+            margin-top: 0.2rem; /* Adjust alignment for larger text */
+        }
+
+        .cta-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 3rem;
+        }
+
+        /* Testimonials Section */
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .testimonial-card {
+            background-color: var(--dark-gray-900);
+            padding: 2rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(14, 241, 198, 0.08); /* Light border */
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(14, 241, 198, 0.3);
+        }
+
+        .testimonial-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            border: 3px solid var(--cyan-400);
+            box-shadow: 0 0 10px rgba(14, 241, 198, 0.5);
+        }
+
+        .testimonial-quote {
+            font-size: 1.125rem;
+            font-style: italic;
+            color: #cbd5e1;
+            margin-bottom: 1rem;
+        }
+
+        .testimonial-author {
+            font-weight: 600;
+            color: #fff;
+            font-size: 1rem;
+        }
+
+        .testimonial-title {
+            font-size: 0.875rem;
+            color: #94a3b8;
+            margin-top: 0.25rem;
+        }
+
+        /* Video Testimonials Styling */
+        .video-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .video-wrapper {
+            background-color: var(--dark-gray-900);
+            border-radius: 0.75rem;
+            overflow: hidden; /* Ensures video respects border-radius */
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(14, 241, 198, 0.08);
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .video-wrapper:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(14, 241, 198, 0.3);
+        }
+
+        .video-responsive {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 aspect ratio (height / width) */
+            height: 0;
+            overflow: hidden;
+            border-radius: 0.75rem; /* Inherit border-radius from wrapper */
+        }
+
+        .video-responsive iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none; /* YouTube embeds have their own borders, remove default */
+        }
+
+        .video-title {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: #fff;
+            padding: 1rem;
+            text-align: center;
+        }
+
+
+        /* Instructors Section */
+        .instructor-card {
+            background-color: var(--dark-gray-900);
+            padding: 1.5rem;
+            border-radius: 0.75rem;
+            text-align: center;
+            border: 1px solid rgba(14, 241, 198, 0.08);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .instructor-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+            border-color: rgba(14, 241, 198, 0.3);
+        }
+
+        .instructor-avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1rem;
+            border: 3px solid var(--highlight-yellow);
+            box-shadow: 0 0 12px rgba(255, 223, 0, 0.6);
+        }
+
+        .instructor-name {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 0.25rem;
+        }
+
+        .instructor-bio {
+            font-size: 0.95rem;
+            color: #a0aec0;
+        }
+
+
+        /* Media Queries for Responsiveness */
+        @media (max-width: 640px) {
+            .hero-section {
+                padding-top: 3rem;
+                padding-bottom: 3rem;
+            }
+            .hero-title {
+                font-size: 2rem;
+            }
+            .hero-subtitle {
+                font-size: 1rem;
+                line-height: 1.5;
+            }
+            .countdown-grid {
+                /* flex-direction: column; Stack countdown items vertically */
+                align-items: center;
+                gap: 0.75rem;
+            }
+            .countdown-circle {
+                width: 70px; /* Slightly smaller on small mobiles */
+                height: 70px;
+                font-size: 2rem;
+            }
+            .hero-buttons {
+                flex-direction: column; /* Stack buttons vertically */
+                width: 100%;
+                
+            }
+            .main-cta-button, .secondary-cta-button {
+                width: 100%; /* Full width buttons */
+                box-sizing: border-box; /* Include padding in width calculation */
+                font-size: 1.1rem;
+            }
+            .info-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns on mobile for info grid */
+                gap: 0.75rem; /* Reduced gap */
+            }
+            .info-item {
+                padding: 0.75rem;
+                flex-direction: column; /* Stack icon and text on very small screens */
+                text-align: center;
+            }
+            .info-icon {
+                margin-bottom: 0.5rem; /* Add space between icon and text */
+            }
+            .section-title {
+                font-size: 1.75rem;
+            }
+            .section-subtitle {
+                font-size: 0.95rem;
+            }
+            .card-grid {
+                grid-template-columns: 1fr; /* Single column for cards */
+            }
+            .card {
+                padding: 1.5rem;
+            }
+            .card-title {
+                font-size: 1.2rem;
+            }
+            .card-description {
+                font-size: 0.9rem;
+            }
+            .accordion-summary {
+                font-size: 1rem;
+                padding: 1rem;
+            }
+            .accordion-icon {
+                width: 1.25rem;
+                height: 1.25rem;
+            }
+            .accordion-list {
+                padding: 0 1rem 1rem;
+            }
+            .list-item {
+                font-size: 0.9rem;
+                gap: 0.5rem;
+            }
+            .list-icon {
+                width: 16px;
+                height: 16px;
+            }
+            .testimonial-avatar {
+                width: 60px;
+                height: 60px;
+            }
+            .testimonial-quote {
+                font-size: 1rem;
+            }
+            .instructor-avatar {
+                width: 80px;
+                height: 80px;
+            }
+            .video-container {
+                grid-template-columns: 1fr; /* Single column for video testimonials */
+            }
+            .video-title {
+                font-size: 1rem;
+            }
+        }
+
+        @media (min-width: 641px) and (max-width: 767px) {
+            .countdown-grid {
+                gap: 1.5rem;
+            }
+            .countdown-circle {
+                width: 70px;
+                height: 70px;
+                font-size: 2rem;
+            }
+            .hero-buttons {
+                flex-direction: row;
+                gap: 1rem;
+            }
+            .info-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .card-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .testimonials-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .video-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+
+        @media (min-width: 768px) {
+            .hero-section {
+                padding-top: 6rem;
+                padding-bottom: 6rem;
+            }
+            .hero-title {
+                font-size: 3.75rem;
+            }
+            .desktop-nav, .apply-button {
+                display: flex;
+            }
+            .mobile-menu-button, .mobile-menu {
+                display: none;
+            }
+            .info-grid {
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+            }
+            .card-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+            .testimonials-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .video-container {
+                grid-template-columns: repeat(2, minmax(0, 1fr)); /* Default 2 columns for videos */
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .card-grid {
+                grid-template-columns: repeat(3, minmax(0, 1fr));
+            }
+            .video-container {
+                grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columns for videos on larger screens */
+            }
+        }
     </style>
 </head>
 
-<body class="bg-gray-950 text-gray-300">
+<body>
 
     <!-- Header -->
-    <header class="bg-gray-950/80 backdrop-blur-sm shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="text-2xl font-bold text-white">
-                <a href="#">DailyTrade Dose</a>
-            </div>
-            <nav class="hidden md:flex items-center space-x-6">
-                <a href="#overview"
-                    class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Overview</a>
-                <a href="#curriculum"
-                    class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Curriculum</a>
-                <a href="#bonuses" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Bonuses</a>
-                <a href="#faculty" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">Faculty</a>
-                <a href="#faq" class="text-gray-300 hover:text-cyan-400 transition-colors duration-200">FAQ</a>
-            </nav>
-            <a href="#apply"
-                class="hidden md:inline-block bg-cyan-500 text-gray-950 font-semibold px-5 py-2 rounded-lg cta-button">Apply
-                Now</a>
-            <button id="mobile-menu-button" class="md:hidden text-white">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <line x1="3" y1="12" x2="21" y2="12"></line>
-                    <line x1="3" y1="6" x2="21" y2="6"></line>
-                    <line x1="3" y1="18" x2="21" y2="18"></line>
-                </svg>
-            </button>
-        </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="hidden md:hidden px-6 pb-4">
-            <a href="#overview" class="block py-2 text-gray-300 hover:text-cyan-400">Overview</a>
-            <a href="#curriculum" class="block py-2 text-gray-300 hover:text-cyan-400">Curriculum</a>
-            <a href="#bonuses" class="block py-2 text-gray-300 hover:text-cyan-400">Bonuses</a>
-            <a href="#faculty" class="block py-2 text-gray-300 hover:text-cyan-400">Faculty</a>
-            <a href="#faq" class="block py-2 text-gray-300 hover:text-cyan-400">FAQ</a>
-            <a href="#apply"
-                class="block mt-4 bg-cyan-500 text-gray-950 text-center font-semibold px-5 py-2 rounded-lg cta-button">Apply
-                Now</a>
-        </div>
-    </header>
+   
 
+    
     <main>
         <!-- Hero Section -->
-        <section class="hero-gradient py-20 md:py-24" id="home">
-            <div class="container mx-auto px-6 text-center">
-                <span class="text-cyan-300 font-semibold bg-cyan-900/50 px-4 py-1 rounded-full glowing-outline">Watch Free Course</span>
-                <h1 class="text-2xl md:text-6xl font-extrabold mt-4 mb-6 leading-tight title-gradient">Forex & Indian Trading Program</h1>
-                <p class="text-xl md:text-xl text-white max-w-3xl mx-auto mb-8">THE SECRET TO <span
-                        class="highlight-green">MAKE EXPONENTIAL </span>💰 PROFIT <span
-                        class="highlight-green">USING </span>OUR STRATEGIES</p>
+        <section class="hero-section" id="home">
+            <div class="container text-center">
+                <span class="hero-tag">Watch Free Course</span>
+                <h1 class="hero-title">Forex & Indian Trading Program</h1>
+                <p class="hero-subtitle">THE SECRET TO <span class="highlight-green">MAKE EXPONENTIAL </span>💰 PROFIT
+                    <span class="highlight-green">USING </span>OUR STRATEGIES
+                </p>
 
                 <!-- Countdown Timer 1 -->
-                <div class="mb-10">
-                    <p class="text-cyan-400 font-semibold text-lg mb-4">Limited Time Offer Ends In:</p>
-                    <div id="countdown-1" class="flex justify-center items-start gap-4 md:gap-8">
-                        <div class="text-center">
-                            <div class="countdown-circle mx-auto flex items-center justify-center text-3xl md:text-4xl font-bold bg-gray-800/50 border-2 border-cyan-700 rounded-full glowing-outline"
-                                id="days1">00</div>
-                            <p class="mt-2 text-sm text-gray-400">Days</p>
+                <div class="countdown-section">
+                    <p class="countdown-text">Limited Time Offer Ends In:</p>
+                    <div id="countdown-1" class="countdown-grid">
+                        <div class="countdown-item">
+                            <div class="countdown-circle" id="days1">00</div>
+                            <p class="countdown-label">Days</p>
                         </div>
-                        <div class="text-center">
-                            <div class="countdown-circle mx-auto flex items-center justify-center text-3xl md:text-4xl font-bold bg-gray-800/50 border-2 border-cyan-700 rounded-full glowing-outline"
-                                id="hours1">00</div>
-                            <p class="mt-2 text-sm text-gray-400">Hours</p>
+                        <div class="countdown-item">
+                            <div class="countdown-circle" id="hours1">00</div>
+                            <p class="countdown-label">Hours</p>
                         </div>
-                        <div class="text-center">
-                            <div class="countdown-circle mx-auto flex items-center justify-center text-3xl md:text-4xl font-bold bg-gray-800/50 border-2 border-cyan-700 rounded-full glowing-outline"
-                                id="minutes1">00</div>
-                            <p class="mt-2 text-sm text-gray-400">Minutes</p>
+                        <div class="countdown-item">
+                            <div class="countdown-circle" id="minutes1">00</div>
+                            <p class="countdown-label">Minutes</p>
                         </div>
-                        <div class="text-center">
-                            <div class="countdown-circle mx-auto flex items-center justify-center text-3xl md:text-4xl font-bold bg-gray-800/50 border-2 border-cyan-700 rounded-full glowing-outline"
-                                id="seconds1">00</div>
-                            <p class="mt-2 text-sm text-gray-400">Seconds</p>
+                        <div class="countdown-item">
+                            <div class="countdown-circle" id="seconds1">00</div>
+                            <p class="countdown-label">Seconds</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12">
-                    <a href="#apply"
-                        class="bg-gradient-to-r from-cyan-500 to-emerald-500 text-gray-950 font-bold px-4 py-4 rounded-lg cta-button text-lg glowing-outline cta-pulse">
-                       Revealed Trading Secrets at Just <s>₹2999</s> <span class="text-white">₹999/-
-                            Only</span> </a>
-                    <a href="course.html"
-                        class="bg-blue-700 text-white border border-gray-600 font-bold px-8 py-4 rounded-lg cta-button text-lg glowing-outline">  Learn Free Course</a>
-                    <p class="text-gray-300 font-semibold text-sm mb-4"><i>*No Prior Experience Needed*</i></p>
+                <div class="hero-buttons">
+                    <a href="#apply" class="main-cta-button cta-pulse">
+                        Revealed Trading Secrets at Just <s>₹2999</s> <span class="price-highlight">₹999/- Only</span>
+                    </a>
+                    <a href="course.html" class="secondary-cta-button">
+                        Learn Free Course
+                    </a>
                 </div>
-                <div class="max-w-4xl mx-auto grid grid-cols-2 md:grid-cols-4 gap-8 text-left">
-                    <div class="flex items-center gap-3">
+                <p class="note">*No Prior Experience Needed*</p>
+                <div class="info-grid">
+                    <div class="info-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="text-cyan-400">
+                            class="info-icon">
                             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
                             <polyline points="14 2 14 8 20 8"></polyline>
                             <line x1="16" y1="13" x2="8" y2="13"></line>
@@ -208,26 +940,26 @@
                             <line x1="10" y1="9" x2="8" y2="9"></line>
                         </svg>
                         <div>
-                            <p class="font-semibold text-white">1 Month</p>
-                            <p class="text-sm text-gray-400">Live Group Classes</p>
+                            <p class="info-title">1 Month</p>
+                            <p class="info-subtitle">Live Group Classes</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="info-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="text-cyan-400">
+                            class="info-icon">
                             <path d="M12 8v4l3 3"></path>
                             <circle cx="12" cy="12" r="10"></circle>
                         </svg>
                         <div>
-                            <p class="font-semibold text-white">1 Hr/Day</p>
-                            <p class="text-sm text-gray-400">Prediction & Analysis</p>
+                            <p class="info-title">1 Hr/Day</p>
+                            <p class="info-subtitle">Prediction & Analysis</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="info-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="text-cyan-400">
+                            class="info-icon">
                             <path d="M17 18a2 2 0 0 0-2-2H9a2 2 0 0 0-2 2"></path>
                             <rect x="3" y="4" width="18" height="18" rx="2"></rect>
                             <circle cx="12" cy="10" r="2"></circle>
@@ -235,15 +967,14 @@
                             <line x1="16" y1="2" x2="16" y2="4"></line>
                         </svg>
                         <div>
-                            <p class="font-semibold text-white">3 Months</p>
-                            <p class="text-sm text-gray-400">Group Support
-</p>
+                            <p class="info-title">3 Months</p>
+                            <p class="info-subtitle">Group Support</p>
                         </div>
                     </div>
-                    <div class="flex items-center gap-3">
+                    <div class="info-item">
                         <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
                             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-                            class="text-cyan-400">
+                            class="info-icon">
                             <path d="m7.5 4.27 9 5.15"></path>
                             <path
                                 d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z">
@@ -252,8 +983,8 @@
                             <path d="M12 22V12"></path>
                         </svg>
                         <div>
-                            <p class="font-semibold text-white">Lifetime Support</p>
-                            <p class="text-sm text-gray-400">Ask any query anytime</p>
+                            <p class="info-title">Lifetime Support</p>
+                            <p class="info-subtitle">Ask any query anytime</p>
                         </div>
                     </div>
                 </div>
@@ -261,41 +992,33 @@
         </section>
 
         <!-- Why This Program Section -->
-        <section id="overview" class="py-20 bg-gray-900">
-            <div class="container mx-auto px-6">
+        <section id="overview" class="section bg-dark-gray-800">
+            <div class="container">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold title-gradient">Why Daily Trade Dose?</h2>
-                    <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">This program is designed that You will Learn
-                        to transform Trading & Investing Forever..! </p>
-                    <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto"><span class="highlight-yellow">No Need To
-                            Trade or Invest Manually Ever Again!
-                        </span> </p>
-
+                    <h2 class="section-title">Why Daily Trade Dose?</h2>
+                    <p class="section-subtitle">This program is designed that You will Learn to transform Trading &
+                        Investing Forever..! </p>
+                    <p class="section-subtitle"><span class="highlight-yellow">No Need To Trade or Invest Manually Ever
+                            Again!</span></p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-grid">
                     <!-- Card 1 -->
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-lg glowing-outline">
-                        <div
-                            class="bg-cyan-900/50 text-cyan-400 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                    <div class="card glowing-outline">
+                        <div class="card-icon-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 8 8 10z"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Strategic Focus</h3>
-                        <p class="text-gray-400">Learn to identify opportunities <br>
-
-Build trading business income <br>
-
-Practical Demos + Live Examples <br>
-
-Work on Real Market.</p>
+                        <h3 class="card-title">Strategic Focus</h3>
+                        <p class="card-description">Learn to identify opportunities <br>Build trading business income
+                            <br>Practical Demos + Live Examples <br>Work on Real Market.
+                        </p>
                     </div>
                     <!-- Card 2 -->
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-lg glowing-outline">
-                        <div
-                            class="bg-cyan-900/50 text-cyan-400 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                    <div class="card glowing-outline">
+                        <div class="card-icon-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -305,13 +1028,13 @@ Work on Real Market.</p>
                                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Risk Management</h3>
-                        <p class="text-gray-400">Forex Target<br>Stoploss: 30–50 pips (logical stoploss) <br> Target: 80–100 pips.</p>
+                        <h3 class="card-title">Risk Management</h3>
+                        <p class="card-description">Forex Target<br>Stoploss: 30–50 pips (logical stoploss) <br> Target:
+                            80–100 pips.</p>
                     </div>
                     <!-- Card 3 -->
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-lg glowing-outline">
-                        <div
-                            class="bg-cyan-900/50 text-cyan-400 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                    <div class="card glowing-outline">
+                        <div class="card-icon-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -321,120 +1044,157 @@ Work on Real Market.</p>
                                 <path d="M19 12v-1a3 3 0 0 0-3-3h-1"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2">Trading Psychology</h3>
-                        <p class="text-gray-400">Draw S/R (Support/Resistance) <br> 
-
-Use EMA 9, 15 <br>
-
-EMA Angle = 30° (trend confirmation) <br>
-
-Follow Indicator Buy/Sell signals <br>
-
-Enter only after candle confirmation.</p>
+                        <h3 class="card-title">Trading Psychology</h3>
+                        <p class="card-description">Draw S/R (Support/Resistance) <br>Use EMA 9, 15 <br>EMA Angle = 30°
+                            (trend confirmation) <br>Follow Indicator Buy/Sell signals <br>Enter only after candle
+                            confirmation.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- Curriculum Section -->
-        <section id="curriculum" class="py-20 bg-gray-950">
-            <div class="container mx-auto px-6">
+        <section id="curriculum" class="section bg-dark-gray-950">
+            <div class="container">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold title-gradient">What You'll Learn</h2>
-                    <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">A comprehensive curriculum designed for
-                        business impact.</p>
+                    <h2 class="section-title">What You'll Learn</h2>
+                    <p class="section-subtitle">A comprehensive curriculum designed for business impact.</p>
                 </div>
-                <!-- Accordion for curriculum -->
-                <div class="max-w-3xl mx-auto space-y-4">
-                    <div class="faq-item border border-gray-700 rounded-lg bg-gray-800 glowing-outline">
+                <div class="accordion-container">
+                    <div class="accordion-item glowing-outline">
                         <details class="p-4" open>
-                            <summary
-                                class="font-semibold text-lg text-white cursor-pointer flex justify-between items-center">
+                            <summary class="accordion-summary">
                                 Module 1: Technicals of Trading
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="w-5 h-5 transition-transform transform duration-300">
+                                <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
-                            <p class="mt-4 text-gray-400">
-                            <ul>
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> What is Price Action</li>
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>What is Candlestick</li>
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Three Types of Price Action Tools</li>
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>How to Draw Support & Resistance</li>
+                            <ul class="accordion-list">
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg> What is Price Action
+                                </li>
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg>What is Candlestick
+                                </li>
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg>Three Types of Price Action Tools
+                                </li>
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg>How to Draw Support & Resistance
+                                </li>
                             </ul>
-                            </p>
                         </details>
                     </div>
-                    <div class="faq-item border border-gray-700 rounded-lg bg-gray-800 glowing-outline">
+                    <div class="accordion-item glowing-outline">
                         <details class="p-4">
-                            <summary
-                                class="font-semibold text-lg text-white cursor-pointer flex justify-between items-center">
+                            <summary class="accordion-summary">
                                 Module 2: Trading Strategies
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="w-5 h-5 transition-transform transform duration-300">
+                                <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
-                            <p class="mt-4 text-gray-400">
-                            <ul>
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>EMA Trading Strategies</li>
-
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Price Action Trading</li>
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Intraday Trading</li>
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg>Swing Trading</li>
-
+                            <ul class="accordion-list">
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg>EMA Trading Strategies
+                                </li>
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg>Price Action Trading
+                                </li>
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg>Intraday Trading
+                                </li>
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg>Swing Trading
+                                </li>
                             </ul>
-                            </p>
                         </details>
                     </div>
-                    <div class="faq-item border border-graySwing Trading
--700 rounded-lg bg-gray-800 glowing-outline">
+                    <div class="accordion-item glowing-outline">
                         <details class="p-4">
-                            <summary
-                                class="font-semibold text-lg text-white cursor-pointer flex justify-between items-center">
+                            <summary class="accordion-summary">
                                 Module 3: Learn AI Trading
-
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="w-5 h-5 transition-transform transform duration-300">
+                                <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
-                            <p class="mt-4 text-gray-400">  <ul>
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> 
-How to Use AI in Trading
-
+                            <ul class="accordion-list">
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg>How to Use AI in Trading
                                 </li>
-
-                             
-
-                            </ul></p>
+                            </ul>
                         </details>
                     </div>
-                    <div class="faq-item border border-gray-700 rounded-lg bg-gray-800 glowing-outline">
+                    <div class="accordion-item glowing-outline">
                         <details class="p-4">
-                            <summary
-                                class="font-semibold text-lg text-white cursor-pointer flex justify-between items-center">
+                            <summary class="accordion-summary">
                                 Module 4: Stock Trading
-
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="w-5 h-5 transition-transform transform duration-300">
+                                <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                                    viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
-                            <p class="mt-4 text-gray-400"><ul>
-                                <li class="flex gap-2 text-lg items-center"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-circle-check-big-icon lucide-circle-check-big"><path d="M21.801 10A10 10 0 1 1 17 3.335"/><path d="m9 11 3 3L22 4"/></svg> 
-Strategies to Find Stocks
-
+                            <ul class="accordion-list">
+                                <li class="list-item">
+                                    <svg class="list-icon" xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                                        viewBox="0 0 24 24" fill="none" stroke="#39ea6e" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M21.801 10A10 10 0 1 1 17 3.335" />
+                                        <path d="m9 11 3 3L22 4" />
+                                    </svg>Strategies to Find Stocks
                                 </li>
-
-                             
-
-                            </ul></p>
+                            </ul>
                         </details>
                     </div>
                 </div>
@@ -442,19 +1202,17 @@ Strategies to Find Stocks
         </section>
 
         <!-- Bonuses Section -->
-        <section id="bonuses" class="py-20 bg-gray-900">
-            <div class="container mx-auto px-6">
+        <section id="bonuses" class="section bg-dark-gray-800">
+            <div class="container">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold title-gradient">Exclusive Bonuses for Early Applicants
-                    </h2>
-                    <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">Enroll now to get instant access to these
-                        trading-focused AI toolkits and masterclasses.</p>
+                    <h2 class="section-title">Exclusive Bonuses for Early Applicants</h2>
+                    <p class="section-subtitle">Enroll now to get instant access to these trading-focused AI toolkits
+                        and masterclasses.</p>
                 </div>
-                <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="card-grid">
                     <!-- Bonus 1 -->
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-lg glowing-outline">
-                        <div
-                            class="bg-yellow-900/50 text-yellow-400 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                    <div class="card glowing-outline">
+                        <div class="card-icon-container bonus-icon-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -462,14 +1220,13 @@ Strategies to Find Stocks
                                 <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2"><span class="highlight-yellow"> Bonus 1 🎁: </span>
-                            AI-Powered Trading Strategies</h3>
-                        <p class="text-gray-400">A special module on how to Leverage Chaos in Markets</p>
+                        <h3 class="card-title"><span class="highlight-yellow">Bonus 1 🎁: </span>AI-Powered Trading
+                            Strategies</h3>
+                        <p class="card-description">A special module on how to Leverage Chaos in Markets</p>
                     </div>
                     <!-- Bonus 2 -->
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-lg glowing-outline">
-                        <div
-                            class="bg-yellow-900/50 text-yellow-400 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                    <div class="card glowing-outline">
+                        <div class="card-icon-container bonus-icon-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
@@ -477,278 +1234,230 @@ Strategies to Find Stocks
                                 <path d="m19 9-5 5-4-4-3 3"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2"><span class="highlight-yellow">Bonus 2 🎁: </span>
-                            Market Sentiment Analysis Toolkit</h3>
-                        <p class="text-gray-400">Trading Tools</p>
+                        <h3 class="card-title"><span class="highlight-yellow">Bonus 2 🎁: </span>Market Sentiment
+                            Analysis Toolkit</h3>
+                        <p class="card-description">Trading Tools</p>
                     </div>
                     <!-- Bonus 3 -->
-                    <div class="bg-gray-900 p-8 rounded-xl shadow-lg glowing-outline">
-                        <div
-                            class="bg-yellow-900/50 text-yellow-400 rounded-full w-12 h-12 flex items-center justify-center mb-4">
+                    <div class="card glowing-outline">
+                        <div class="card-icon-container bonus-icon-container">
                             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                                 fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
                                 stroke-linejoin="round">
-                                <path d="M12 12v-2a4 4 0 0 0-4-4H4a4 4 0 0 0-4 4v12a4 4 0 0 0 4 4h16a4 4 0 0 0 4-4v-2">
+                                <path
+                                    d="M12 12v-2a4 4 0 0 0-4-4H4a4 4 0 |0 0-4 4v12a4 4 0 0 0 4 4h16a4 4 0 0 0 4-4v-2">
                                 </path>
                                 <path d="M16 12h4"></path>
                                 <path d="M18 10v4"></path>
                                 <path d="m4.5 9.5 3 3-3 3"></path>
                             </svg>
                         </div>
-                        <h3 class="text-xl font-bold text-white mb-2"> <span class="highlight-yellow">Bonus 3 🎁: </span>
-                            To be added by mentor after joining us</h3>
-                        <!-- <p class="text-gray-400">Join a live, interactive session with a professional trader who uses AI
-                            to navigate the financial markets.</p> -->
+                        <h3 class="card-title"><span class="highlight-yellow">Bonus 3 🎁: </span>To be added by mentor
+                            after joining us</h3>
+                        <p class="card-description"></p>
                     </div>
                 </div>
-                <!-- New button for trading secrets -->
-
-                <div class="flex flex-col sm:flex-row justify-center items-center gap-4 mb-12 mt-12">
-                    <a href="#apply"
-                        class="bg-gradient-to-r from-cyan-500 to-emerald-500 text-gray-950 font-bold px-4 py-4 rounded-lg cta-button text-lg glowing-outline cta-pulse text-center">
-                        Revealed Trading Secrets at Just <s>₹2999</s> <span class="text-white">₹999/-
-                            Only</span> </a>
-                    <!-- <a href="#apply"
-                        class="bg-gray-700 text-white border border-gray-600 font-bold px-8 py-4 rounded-lg cta-button text-lg glowing-outline">Apply
-                        Now</a> -->
-                    <p class="text-gray-300 font-semibold text-sm mb-4"><i>*No Prior Experience Needed*</i></p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Faculty Section -->
-        <section id="faculty" class="py-20 bg-gray-950">
-            <div class="container mx-auto px-6">
-                <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold title-gradient">Meet Your Instructors</h2>
-                    <p class="text-lg text-gray-400 mt-4 max-w-2xl mx-auto">Learn from the best in the industry.</p>
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Faculty 1 -->
-                    <div class="text-center glowing-outline p-6 rounded-2xl">
-                        <img src="https://placehold.co/400x400/10B981/047857?text=Dr.+E.C."
-                            alt="Faculty Member Dr. Eva Chen"
-                            class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg border-4 border-gray-700">
-                        <h3 class="text-xl font-bold text-white">Mr. David Singh</h3>
-                        <p class="text-cyan-400 font-medium">Head of Forex Research, Innovate Inc.</p>
-                        <p class="text-gray-400 mt-2">10+ years of experience in Forex Trading and Investing</p>
-                    </div>
-                    <!-- Faculty 2 -->
-                    <div class="text-center glowing-outline p-6 rounded-2xl">
-                        <img src="https://placehold.co/400x400/10B981/047857?text=J.C." alt="Faculty Member John Carter"
-                            class="w-48 h-48 rounded-full mx-auto mb-4 object-cover shadow-lg border-4 border-gray-700">
-                        <h3 class="text-xl font-bold text-white">John Carter</h3>
-                        <p class="text-cyan-400 font-medium">Professor of Practice, Global Tech University</p>
-                        <p class="text-gray-400 mt-2">Expert in AI strategy and digital transformation, advises Fortune
-                            500 companies.</p>
-                    </div>
-
-
+                <div class="cta-section">
+                    <a href="#apply" class="main-cta-button cta-pulse">
+                        Revealed Trading Secrets at Just <s>₹2999</s> <span class="price-highlight">₹999/- Only</span>
+                    </a>
                 </div>
             </div>
         </section>
 
         <!-- Testimonials Section -->
-        <section id="testimonials" class="py-20 bg-gray-900">
-            <div class="container mx-auto px-6">
+        <section id="testimonials" class="section bg-dark-gray-950">
+            <div class="container">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold title-gradient">What Our Alumni Say</h2>
+                    <h2 class="section-title">What Our Students Say</h2>
+                    <p class="section-subtitle">Hear from successful traders who transformed their skills with DailyTrade Dose.</p>
                 </div>
-                <div class="grid lg:grid-cols-2 gap-8">
-                    <div class="bg-gray-800 p-8 rounded-xl shadow-lg glowing-outline">
-                        <p class="text-gray-400 italic mb-6">"This program was a game-changer. It demystified AI and
-                            gave me the confidence to lead our company's AI initiatives. The strategic frameworks are
-                            invaluable."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/100x100/10B981/FFFFFF?text=AS" alt="Alumni Alex Smith"
-                                class="w-14 h-14 rounded-full mr-4 object-cover">
-                            <div>
-                                <p class="font-bold text-white">Dipesh Verma</p>
-                                <p class="text-gray-400">VP of Strategy, TechCorp</p>
-                            </div>
-                        </div>
+                <div class="testimonials-grid">
+                    <div class="testimonial-card glowing-outline">
+                        <img src="https://placehold.co/80x80/00bf63/ffffff?text=JT" alt="Testimonial Avatar" class="testimonial-avatar">
+                        <p class="testimonial-quote">"This program completely changed my approach to trading. The live classes and support are invaluable!"</p>
+                        <p class="testimonial-author">Jane Doe</p>
+                        <p class="testimonial-title">Forex Trader</p>
                     </div>
-                    <div class="bg-gray-800 p-8 rounded-xl shadow-lg glowing-outline">
-                        <p class="text-gray-400 italic mb-6">"I came from a non-technical background and was worried I'd
-                            be out of my depth. The curriculum is perfectly paced for leaders, focusing on impact over
-                            implementation details."</p>
-                        <div class="flex items-center">
-                            <img src="https://placehold.co/100x100/10B981/FFFFFF?text=BD" alt="Alumni Brenda Davis"
-                                class="w-14 h-14 rounded-full mr-4 object-cover">
-                            <div>
-                                <p class="font-bold text-white">Brenda Davis</p>
-                                <p class="text-gray-400">Marketing Director, Retail Innovations</p>
-                            </div>
+                    <div class="testimonial-card glowing-outline">
+                        <img src="https://placehold.co/80x80/00bf63/ffffff?text=MA" alt="Testimonial Avatar" class="testimonial-avatar">
+                        <p class="testimonial-quote">"The AI trading module is a game-changer. I'm seeing consistent profits for the first time."</p>
+                        <p class="testimonial-author">Michael A.</p>
+                        <p class="testimonial-title">Stock Investor</p>
+                    </div>
+                    <div class="testimonial-card glowing-outline">
+                        <img src="https://placehold.co/80x80/00bf63/ffffff?text=RC" alt="Testimonial Avatar" class="testimonial-avatar">
+                        <p class="testimonial-quote">"Lifetime support is truly what sets this program apart. My queries are always answered promptly."</p>
+                        <p class="testimonial-author">Ravi C.</p>
+                        <p class="testimonial-title">Beginner Trader</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Video Testimonials Section -->
+        <section id="video-testimonials" class="section bg-dark-gray-800">
+            <div class="container">
+                <div class="text-center mb-12">
+                    <h2 class="section-title">Video Success Stories</h2>
+                    <p class="section-subtitle">Watch our students share their journey and success with DailyTrade Dose.</p>
+                </div>
+                <div class="video-container">
+                    <div class="video-wrapper glowing-outline">
+                        <div class="video-responsive">
+                            <iframe src="https://www.youtube.com/embed/dQw4w9WgXcQ?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                         </div>
+                        <p class="video-title">Amazing Results with Forex Trading</p>
+                    </div>
+                    <div class="video-wrapper glowing-outline">
+                        <div class="video-responsive">
+                            <iframe src="https://www.youtube.com/embed/M7lc1UVf-VE?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                        <p class="video-title">From Beginner to Pro in 3 Months</p>
+                    </div>
+                    <div class="video-wrapper glowing-outline">
+                        <div class="video-responsive">
+                            <iframe src="https://www.youtube.com/embed/P-Yy7n5c0xQ?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                        </div>
+                        <p class="video-title">My Journey to Financial Freedom</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Instructors Section -->
+        <section id="faculty" class="section bg-dark-gray-800">
+            <div class="container">
+                <div class="text-center mb-12">
+                    <h2 class="section-title">Meet Our Expert Instructors</h2>
+                    <p class="section-subtitle">Learn from industry veterans with years of practical trading experience.</p>
+                </div>
+                <div class="card-grid">
+                    <div class="instructor-card glowing-outline">
+                        <img src="https://placehold.co/100x100/FFDF00/0d0a1b?text=JD" alt="Instructor Avatar" class="instructor-avatar">
+                        <h3 class="instructor-name">Johnathan Davis</h3>
+                        <p class="instructor-bio">Lead Forex Strategist | 15+ Years Experience</p>
+                        <p class="instructor-bio">Specializes in technical analysis and risk management.</p>
+                    </div>
+                    <div class="instructor-card glowing-outline">
+                        <img src="https://placehold.co/100x100/FFDF00/0d0a1b?text=AS" alt="Instructor Avatar" class="instructor-avatar">
+                        <h3 class="instructor-name">Dr. Anya Sharma</h3>
+                        <p class="instructor-bio">AI Trading Lead | PhD in Quantitative Finance</p>
+                        <p class="instructor-bio">Pioneering AI-driven trading algorithms.</p>
+                    </div>
+                    <div class="instructor-card glowing-outline">
+                        <img src="https://placehold.co/100x100/FFDF00/0d0a1b?text=MW" alt="Instructor Avatar" class="instructor-avatar">
+                        <h3 class="instructor-name">Marcus Williams</h3>
+                        <p class="instructor-bio">Market Psychology Expert | Ex-Hedge Fund Trader</p>
+                        <p class="instructor-bio">Focuses on discipline and emotional control in trading.</p>
                     </div>
                 </div>
             </div>
         </section>
 
         <!-- FAQ Section -->
-        <section id="faq" class="py-20 bg-gray-950">
-            <div class="container mx-auto px-6">
+        <section id="faq" class="section bg-dark-gray-950">
+            <div class="container">
                 <div class="text-center mb-12">
-                    <h2 class="text-3xl md:text-4xl font-bold title-gradient">Frequently Asked Questions</h2>
+                    <h2 class="section-title">Frequently Asked Questions</h2>
+                    <p class="section-subtitle">Find answers to common questions about our trading program.</p>
                 </div>
-                <div class="max-w-3xl mx-auto space-y-4">
-                    <div class="faq-item border border-gray-700 rounded-lg bg-gray-800 glowing-outline">
+                <div class="accordion-container">
+                    <div class="accordion-item glowing-outline">
                         <details class="p-4">
-                            <summary
-                                class="font-semibold text-lg text-white cursor-pointer flex justify-between items-center">
-                                Do I need any Trading skills?
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="w-5 h-5 transition-transform transform duration-300">
+                            <summary class="accordion-summary">
+                                What is Forex trading?
+                                <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
-                            <p class="mt-4 text-gray-400">Not at all. This program is specifically designed for business
-                                leaders and managers. We focus on strategy, management, and business application, not on
-                                coding.</p>
+                            <p class="accordion-list">Forex (Foreign Exchange) trading is the exchange of one currency for another at an agreed-upon price. It's the largest financial market in the world.</p>
                         </details>
                     </div>
-                    <div class="faq-item border border-gray-700 rounded-lg bg-gray-800 glowing-outline">
+                    <div class="accordion-item glowing-outline">
                         <details class="p-4">
-                            <summary
-                                class="font-semibold text-lg text-white cursor-pointer flex justify-between items-center">
-                                What is the time commitment?
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="w-5 h-5 transition-transform transform duration-300">
+                            <summary class="accordion-summary">
+                                Do I need prior experience to join?
+                                <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
-                            <p class="mt-4 text-gray-400">We recommend dedicating 5-7 hours per week. This includes live
-                                sessions, self-paced learning, and work on your capstone project. The schedule is
-                                flexible to accommodate busy professionals.</p>
+                            <p class="accordion-list">No, our program is designed for all levels, from complete beginners to experienced traders looking to refine their skills. We start with the fundamentals.</p>
                         </details>
                     </div>
-                    <div class="faq-item border border-gray-700 rounded-lg bg-gray-800 glowing-outline">
+                    <div class="accordion-item glowing-outline">
                         <details class="p-4">
-                            <summary
-                                class="font-semibold text-lg text-white cursor-pointer flex justify-between items-center">
-                                Will I get a certificate?
-                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
-                                    fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"
-                                    stroke-linejoin="round" class="w-5 h-5 transition-transform transform duration-300">
+                            <summary class="accordion-summary">
+                                What kind of support is provided?
+                                <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="6 9 12 15 18 9"></polyline>
                                 </svg>
                             </summary>
-                            <p class="mt-4 text-gray-400">Yes, upon successful completion of the program, you will
-                                receive a Certificate in Forex Trading from Daily TradeDose and Global Tech University.
-                            </p>
+                            <p class="accordion-list">We offer 3 months of group support and lifetime query support, ensuring you always have a resource for your trading journey.</p>
+                        </details>
+                    </div>
+                    <div class="accordion-item glowing-outline">
+                        <details class="p-4">
+                            <summary class="accordion-summary">
+                                How does the AI trading module work?
+                                <svg class="accordion-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="6 9 12 15 18 9"></polyline>
+                                </svg>
+                            </summary>
+                            <p class="accordion-list">Our AI module teaches you how to leverage artificial intelligence tools to analyze market trends, predict movements, and automate certain aspects of your trading for exponential profits.</p>
                         </details>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Final CTA Section -->
-        <section id="apply" class="py-20 bg-gradient-to-r from-cyan-600 to-blue-600 text-white">
-            <div class="container mx-auto px-6 text-center">
-                <!-- Countdown Timer 2 -->
-                <div class="mb-10">
-                    <div id="countdown-2" class="flex justify-center items-start gap-4 md:gap-8">
-                        <div class="text-center">
-                            <div class="countdown-circle mx-auto flex items-center justify-center text-3xl md:text-4xl font-bold bg-white/20 border-2 border-white/50 rounded-full glowing-outline"
-                                id="days2">00</div>
-                            <p class="mt-2 text-sm text-blue-100">Days</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="countdown-circle mx-auto flex items-center justify-center text-3xl md:text-4xl font-bold bg-white/20 border-2 border-white/50 rounded-full glowing-outline"
-                                id="hours2">00</div>
-                            <p class="mt-2 text-sm text-blue-100">Hours</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="countdown-circle mx-auto flex items-center justify-center text-3xl md:text-4xl font-bold bg-white/20 border-2 border-white/50 rounded-full glowing-outline"
-                                id="minutes2">00</div>
-                            <p class="mt-2 text-sm text-blue-100">Minutes</p>
-                        </div>
-                        <div class="text-center">
-                            <div class="countdown-circle mx-auto flex items-center justify-center text-3xl md:text-4xl font-bold bg-white/20 border-2 border-white/50 rounded-full glowing-outline"
-                                id="seconds2">00</div>
-                            <p class="mt-2 text-sm text-blue-100">Seconds</p>
-                        </div>
-                    </div>
-                </div>
-                <h2 class="text-3xl md:text-4xl font-bold">Ready to Revealed Trading Secrets</h2>
-                <p class="text-lg text-blue-100 mt-4 max-w-2xl mx-auto">The next cohort starts soon. Submit your
-                    application to secure your spot and transform your career.</p>
-                <div class="mt-8">
+        <!-- Optional: Scripts for interactivity like the mobile menu and countdown timer -->
+        <script>
+            // Mobile Menu Toggle
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
 
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
 
-                    <a href="#"
-                        class="bg-white text-blue-600 font-bold px-8 py-4 rounded-lg cta-button text-lg shadow-lg">Enroll
-                        Now <i>₹999/- Only</i></a>
+            // Countdown Timer
+            function startCountdown(duration, display) {
+                let timer = duration, days, hours, minutes, seconds;
+                setInterval(() => {
+                    days = Math.floor(timer / (60 * 60 * 24));
+                    hours = Math.floor((timer % (60 * 60 * 24)) / (60 * 60));
+                    minutes = Math.floor((timer % (60 * 60)) / 60);
+                    seconds = Math.floor(timer % 60);
 
+                    days = days < 10 ? '0' + days : days;
+                    hours = hours < 10 ? '0' + hours : hours;
+                    minutes = minutes < 10 ? '0' + minutes : minutes;
+                    seconds = seconds < 10 ? '0' + seconds : seconds;
 
-                </div>
+                    display.days.textContent = days;
+                    display.hours.textContent = hours;
+                    display.minutes.textContent = minutes;
+                    display.seconds.textContent = seconds;
 
-            </div>
-        </section>
-    </main>
-
-    <!-- Footer -->
-    <footer class="bg-gray-950 text-gray-400">
-        <div class="container mx-auto px-6 py-8">
-            <div class="flex flex-col md:flex-row justify-between items-center">
-                <div class="text-center md:text-left mb-4 md:mb-0">
-                    <h4 class="text-xl font-bold text-white">Daily TradeDose</h4>
-                    <p class="text-gray-500">Empowering leaders for the future.</p>
-                </div>
-                <div class="flex space-x-6">
-                    <a href="#" class="hover:text-white">Privacy Policy</a>
-                    <a href="#" class="hover:text-white">Terms of Service</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <script>
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-
-        // Function to update the countdown timer
-        function updateCountdown(targetDate, daysId, hoursId, minutesId, secondsId) {
-            const now = new Date().getTime();
-            const distance = targetDate - now;
-
-            if (distance < 0) {
-                document.getElementById(daysId).innerHTML = "00";
-                document.getElementById(hoursId).innerHTML = "00";
-                document.getElementById(minutesId).innerHTML = "00";
-                document.getElementById(secondsId).innerHTML = "00";
-                return;
+                    if (--timer < 0) {
+                        timer = duration;
+                    }
+                }, 1000);
             }
 
-            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-            document.getElementById(daysId).innerHTML = days.toString().padStart(2, '0');
-            document.getElementById(hoursId).innerHTML = hours.toString().padStart(2, '0');
-            document.getElementById(minutesId).innerHTML = minutes.toString().padStart(2, '0');
-            document.getElementById(secondsId).innerHTML = seconds.toString().padStart(2, '0');
-        }
-
-        // Set the target date for the countdowns (e.g., 3 days from now)
-        const targetDate = new Date();
-        targetDate.setDate(targetDate.getDate() + 1);
-
-        // Update the timers every second
-        setInterval(() => {
-            updateCountdown(targetDate, 'days1', 'hours1', 'minutes1', 'seconds1');
-            updateCountdown(targetDate, 'days2', 'hours2', 'minutes2', 'seconds2');
-        }, 1000);
-    </script>
+            window.onload = function () {
+                const oneHour = 60 * 60; // 1 hour in seconds
+                const display = {
+                    days: document.querySelector('#days1'),
+                    hours: document.querySelector('#hours1'),
+                    minutes: document.querySelector('#minutes1'),
+                    seconds: document.querySelector('#seconds1')
+                };
+                startCountdown(oneHour, display);
+            };
+        </script>
+    </main>
 </body>
-
 
 </html>
