@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - DailyTradeDose</title>
+    <style>
+        :root {
+            --bg-color: #111827;
+            --text-color: #f3f4f6;
+            --secondary-text-color: #9ca3af;
+            --heading-color: #ffffff;
+            --link-color: #9ca3af;
+            --link-hover-color: #ffffff;
+            --form-bg-color: #1f2937;
+            --form-border-color: #374151;
+            --button-color: #4a5568;
+            --button-hover-color: #2d3748;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.8;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2.5rem 1.5rem;
+        }
+        
+        @media (min-width: 768px) {
+            .container {
+                padding: 3rem 2rem;
+            }
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-size: clamp(2rem, 5vw, 3rem);
+            color: var(--heading-color);
+            margin-bottom: 0.5rem;
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: clamp(1.5rem, 4vw, 2rem);
+            color: var(--heading-color);
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            font-weight: 600;
+        }
+
+        p, label {
+            font-size: clamp(1.1rem, 2.5vw, 1.125rem);
+            color: var(--secondary-text-color);
+            margin-bottom: 1.25rem;
+        }
+
+        a {
+            color: var(--link-color);
+            text-decoration: none;
+            transition: color 0.2s ease-in-out;
+        }
+
+        a:hover {
+            color: var(--link-hover-color);
+            text-decoration: underline;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--form-border-color);
+            border-radius: 0.5rem;
+            background-color: var(--form-bg-color);
+            color: var(--text-color);
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease-in-out;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--link-color);
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 150px;
+        }
+
+        .button-submit {
+            display: inline-block;
+            width: 100%;
+            padding: 1rem 1.5rem;
+            background-color: var(--button-color);
+            color: var(--text-color);
+            border: none;
+            border-radius: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        .button-submit:hover {
+            background-color: var(--button-hover-color);
+        }
+
+        .contact-info {
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+          <button onclick="goBack()"><- Go Back</button>
+
+
+        <header>
+            <h1>Contact Us</h1>
+        </header>
+        
+        <main>
+            <p>
+                We'd love to hear from you! If you have a question, feedback, or a business inquiry, please reach out to us directly.
+            </p>
+
+            <div class="contact-info">
+                <h2>Email Us Directly</h2>
+                <p>
+                    For all inquiries, please email us at:
+                    <br>
+                    <a href="mailto:contact@dailytradedose.vercel.app">dailytradedose@gmail.com</a>
+                </p>
+            </div>
+        </main>
+    </div>
+    <script>
+      function goBack() {
+        window.history.back();
+      }
+    </script>
+</body>
+</html>
